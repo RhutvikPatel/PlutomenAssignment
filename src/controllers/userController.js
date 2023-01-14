@@ -53,9 +53,9 @@ const filterByDepartment = async (req, res)=> {
 const getUserContact = async (req, res) => {
     try{
         let userId = req.params.userId
-        if(mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({ status: false, message: "Please enter valid User Id" });
+        if(!mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({ status: false, message: "Please enter valid User Id" });
 
-        let data = await userModel.find()
+        let data = await userModel.find({_id: {$ne: userId}})
         
         return res.status(200).send({ status: true, message: "User Details By Department..", data: data});
     } catch(error) {
